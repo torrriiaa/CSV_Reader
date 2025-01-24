@@ -1,0 +1,82 @@
+﻿@model IEnumerable<CSV_Reader.Models.Person>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>List of workers</h1>
+<div class="col pt-1">
+    <a asp-action="Upload" class="btn btn-primary"><i class="bi bi-box-arrow-in-down"></i>Upload file</a>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Date Of Birth
+            </th>
+            <th>
+                Married status
+            </th>
+            <th>
+                Phone number
+            </th>
+            <th>
+                Salary
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @item.Name
+            </td>
+            <td>
+                @item.DateOfBirth
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.IsMarried)
+            </td>
+            <td>
+                @item.Phone
+            </td>
+            <td>
+                @item.Salary.ToString("C", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"))
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success"><i class="bi bi-pencil-square"></i></a>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<script>
+    const table = document.querySelector(".table");
+    const header = table.querySelector("th:first-child");
+    const tbody = table.querySelector("tbody");
+
+    header.style.cursor = "pointer";
+    header.addEventListener("click", () => {
+        const rows = Array.from(tbody.querySelectorAll("tr"));
+        const isAscending = header.classList.contains("asc");
+
+        header.classList.toggle("asc", !isAscending);
+        header.classList.toggle("desc", isAscending);
+
+        rows.sort((a, b) => {
+            const aText = a.children[0].textContent.trim();
+            const bText = b.children[0].textContent.trim();
+            return isAscending
+                ? bText.localeCompare(aText)
+                : aText.localeCompare(bText);
+        });
+
+        rows.forEach(row => tbody.appendChild(row));
+    });
+</script>
+
