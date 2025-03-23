@@ -6,13 +6,12 @@ using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 
 namespace CSV_Reader;
-
+// це я тут побувала
 public class Program
 {
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-
         // Add services to the container.
         builder.Services.AddDbContext<CsvPersonDbContext>(option =>
         {
